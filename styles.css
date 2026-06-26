@@ -4001,7 +4001,6 @@ section[id] {
   padding: 1rem;
   border-radius: 8px;
   margin: 0.5rem 0;
-  border-left: 3px solid #ef4444;
   white-space: pre-wrap;
 }
 
@@ -5338,6 +5337,9 @@ html.light-mode .nav-auth-link:hover {
 }
 .syntax-highlight .token.string {
   color: #c3e88d;
+}
+.syntax-highlight .token.preprocessor {
+  color: #a27dea;
 }
 .syntax-highlight .token.number {
   color: #f78c6c;
