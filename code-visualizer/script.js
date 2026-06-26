@@ -379,3 +379,53 @@ document.getElementById('codeEditor').addEventListener('input', () => {
 window.addEventListener("resize", () => {
   if (typeof updateLineNumbers === 'function') updateLineNumbers();
 });
+
+// Function to update user interface metrics for Interview Readiness
+function renderReadinessDashboard(data) {
+  // Update numbers
+  document.getElementById('overall-score-badge').innerText = `${data.overallPercentage}%`;
+  document.getElementById('dsa-score').innerText = `${data.breakdown.dsa}%`;
+  document.getElementById('design-score').innerText = `${data.breakdown.systemDesign}%`;
+  document.getElementById('quiz-score').innerText = `${data.breakdown.interview}%`;
+
+  // Render Suggestions
+  const suggestionsList = document.getElementById('suggestions-list');
+  suggestionsList.innerHTML = ''; // clear out loading placeholder
+  data.suggestions.forEach(tip => {
+    const li = document.createElement('li');
+    li.style.fontSize = '14px';
+    li.style.color = '#444';
+    li.style.marginBottom = '8px';
+    li.innerHTML = `💡 ${tip}`;
+    suggestionsList.appendChild(li);
+  });
+
+  // Render Missing Topics
+  const tagsContainer = document.getElementById('missing-topics-tags');
+  tagsContainer.innerHTML = '';
+  data.missingTopics.forEach(topic => {
+    const span = document.createElement('span');
+    span.className = 'topic-tag';
+    span.innerText = `⚠️ ${topic}`;
+    tagsContainer.appendChild(span);
+  });
+}
+
+// Mocking data simulation (or replace URL with real backend fetch call if running)
+const dummyDataReport = {
+  overallPercentage: 74,
+  breakdown: { dsa: 80, systemDesign: 50, interview: 85 },
+  missingTopics: ['Microservices', 'System Design Basics', 'Graphs'],
+  suggestions: [
+    "Take more mock quizzes to boost your quick recall.",
+    "Focus on learning missing foundational topics: Microservices.",
+    "Try solving at least 2 DSA problems daily to hit your target."
+  ]
+};
+
+// Auto-run dashboard on load 
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('readiness-dashboard')) {
+     renderReadinessDashboard(dummyDataReport);
+  }
+});

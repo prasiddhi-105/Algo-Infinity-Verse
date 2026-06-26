@@ -96,6 +96,45 @@
         </div>
     </div>
 
+    <!-- Interview Readiness Dashboard Container -->
+<div id="readiness-dashboard" class="dashboard-container">
+  <div class="dashboard-header">
+    <div>
+      <h2>Interview Readiness Score</h2>
+      <p>Based on recent practice activity & consistency metrics</p>
+    </div>
+    <div class="score-circle-container">
+      <div id="overall-score-badge" class="score-badge">--%</div>
+    </div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card dsa">
+      <span class="card-title">DSA Readiness</span>
+      <div id="dsa-score" class="card-value">--%</div>
+    </div>
+    <div class="metric-card design">
+      <span class="card-title">System Design Readiness</span>
+      <div id="design-score" class="card-value">--%</div>
+    </div>
+    <div class="metric-card quiz">
+      <span class="card-title">Quiz & Core Interview</span>
+      <div id="quiz-score" class="card-value">--%</div>
+    </div>
+  </div>
+
+  <div class="feedback-layout">
+    <div class="feedback-section shadow-box">
+      <h3>Improvement Suggestions</h3>
+      <ul id="suggestions-list"></ul>
+    </div>
+    <div class="feedback-section shadow-box">
+      <h3>Missing Topics</h3>
+      <div id="missing-topics-tags" class="tags-container"></div>
+    </div>
+  </div>
+</div>
+
     <script src="editor.js"></script>
     <script src="script.js"></script>
     <script src="/theme.js"></script>
