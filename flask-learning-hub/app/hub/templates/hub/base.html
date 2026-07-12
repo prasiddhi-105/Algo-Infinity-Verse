@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask Learning Hub | Algo-Infinity-Verse{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-950 text-gray-100 flex flex-col min-h-screen font-sans">
+
+    <nav class="bg-gray-900/50 backdrop-blur-md border-b border-gray-800 text-white sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{{ url_for('hub.module_list') }}" class="text-xl font-extrabold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent tracking-wider">
+                        ⚡ Algo-Infinity Flask
+                    </a>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="{{ url_for('hub.module_list') }}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Learning Path</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gray-900 text-gray-500 text-center py-6 border-t border-gray-800 text-sm">
+        &copy; 2026 Algo-Infinity-Verse | Designed for Tech Learners
+    </footer>
+
+</body>
+</html>
