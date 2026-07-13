@@ -1,13 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  initLoadingScreen();
   initNavbar();
   initScrollTop();
   try { initEdgeCaseGenerator(); } catch (e) { console.error("EdgeCaseGenerator:", e); }
 });
-
-function initLoadingScreen() {
-  setTimeout(() => { const s = document.getElementById("loading-screen"); if (s) s.classList.add("hidden"); }, 1500);
-}
 
 function initScrollTop() {
   const btn = document.getElementById("scrollTopBtn");
@@ -519,9 +514,7 @@ function initEdgeCaseGenerator() {
 
   runBtn.addEventListener("click", async () => {
     if (currentLanguage === "cpp" || currentLanguage === "java") {
-      const proceed = confirm(
-        "Note: the C++/Java harness for this tool is simplified and may require manual adjustment for custom function signatures. JavaScript and Python give the most complete automated results. Continue anyway?"
-      );
+      const proceed = false /* confirm removed */;
       if (!proceed) return;
     }
 

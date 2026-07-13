@@ -1,6 +1,15 @@
+/**
+ * Vercel serverless function — POST/GET /api/quiz-results
+ *
+ * ⚠️ IMPORTANT: On Vercel each file must have a default export.
+ *    This file previously only exported named functions, which caused
+ *    Vercel to return 500 on every request.
+ */
+
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import crypto from "crypto";
+import { SESSION_COOKIE, verifySessionToken, parseCookies } from "../backend/utils/sessionToken.js";
 
 let db = null;
 let useFirestore = false;
@@ -17,7 +26,7 @@ function initFirebase() {
   const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
   if (!projectId || !clientEmail || !privateKey) {
-    console.warn("Firebase credentials not set.");
+    void 0;
     return;
   }
 
@@ -31,57 +40,6 @@ function initFirebase() {
 }
 
 initFirebase();
-
-const SESSION_COOKIE = "aiv_session";
-
-function sessionSecret() {
-  if (process.env.SESSION_SECRET) return process.env.SESSION_SECRET;
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("SESSION_SECRET is required in production.");
-  }
-  return "dev-only-change-me-with-SESSION_SECRET-before-deploying";
-}
-
-function sign(value) {
-  return crypto.createHmac("sha256", sessionSecret()).update(value).digest("base64url");
-}
-
-function fromBase64Url(input) {
-  return Buffer.from(input.replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8");
-}
-
-function verifySessionToken(token) {
-  if (!token) return null;
-  const parts = token.split(".");
-  if (parts.length !== 3) return null;
-  const [header, payload, signature] = parts;
-  const body = `${header}.${payload}`;
-  const expected = sign(body);
-  const signatureBuffer = Buffer.from(signature);
-  const expectedBuffer = Buffer.from(expected);
-  if (
-    signatureBuffer.length !== expectedBuffer.length ||
-    !crypto.timingSafeEqual(signatureBuffer, expectedBuffer)
-  ) {
-    return null;
-  }
-
-  try {
-    const session = JSON.parse(fromBase64Url(payload));
-    if (!session.exp || session.exp < Math.floor(Date.now() / 1000)) return null;
-    return session;
-  } catch {
-    return null;
-  }
-}
-
-function parseCookies(header = "") {
-  return header.split(";").reduce((cookies, part) => {
-    const [name, ...value] = part.trim().split("=");
-    if (name) cookies[name] = decodeURIComponent(value.join("="));
-    return cookies;
-  }, {});
-}
 
 /**
  * Validate quiz result payload before saving.
@@ -103,7 +61,7 @@ function validateQuizResult(payload) {
  * POST /api/quiz-results
  * Save a quiz attempt to Firestore under users/{userId}/quizResults/{attemptId}
  */
-export async function saveQuizResult(req, res) {
+export async function saveQuizResult(req, _res) {
   const cookies = parseCookies(req.headers.cookie || "");
   const session = verifySessionToken(cookies[SESSION_COOKIE]);
   if (!session) return { status: 401, body: { error: "Authentication required." } };
@@ -162,7 +120,7 @@ export async function saveQuizResult(req, res) {
  * Fetch quiz history for the authenticated user, sorted by completedAt descending.
  * Optional query params: ?limit=20&topic=Arrays
  */
-export async function getQuizResults(req, res) {
+export async function getQuizResults(req, _res) {
   const cookies = parseCookies(req.headers.cookie || "");
   const session = verifySessionToken(cookies[SESSION_COOKIE]);
   if (!session) return { status: 401, body: { error: "Authentication required." } };
@@ -194,5 +152,22 @@ export async function getQuizResults(req, res) {
   } catch (error) {
     console.error("Failed to fetch quiz results:", error);
     return { status: 500, body: { error: "Failed to fetch quiz results." } };
+  }
+}
+
+export default async function handler(req, res) {
+  try {
+    let result;
+    if (req.method === "POST") {
+      result = await saveQuizResult(req, res);
+    } else if (req.method === "GET") {
+      result = await getQuizResults(req, res);
+    } else {
+      return res.status(405).json({ error: "Method not allowed" });
+    }
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    console.error("[quiz-results] Unhandled error:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }

@@ -27,17 +27,6 @@
 </head>
 <body class="challenge-mode">
 <body class="challenge-mode" data-page="reverse-complexity">
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="hidden">
-        <div class="loader">
-            <div class="infinity-loader">∞</div>
-            <h2>Generating Challenge...</h2>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- Navigation Bar (Shared with index.html) -->
     <div id="navbar-placeholder"></div>
 
@@ -85,7 +74,7 @@
                 <div id="feedback-icon"></div>
                 <h2 id="feedback-title">Correct!</h2>
                 <div id="feedback-explanation" class="explanation-box"></div>
-                <button id="next-btn" class="btn-primary">Next Challenge</button>
+                <button type="button" id="next-btn" class="btn-primary">Next Challenge</button>
             </div>
         </div>
 
@@ -104,7 +93,10 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="/bootstrap-legacy.js"></script>
+
     <script src="/script.js"></script>
+    <script type="module" src="/dist/legacy-bundle.mjs"></script>
     <script src="/theme.js"></script>
     <script src="/auth.js"></script> <!-- Reuses addXP and userProgress logic -->
     <script src="reverse-complexity.js"></script>

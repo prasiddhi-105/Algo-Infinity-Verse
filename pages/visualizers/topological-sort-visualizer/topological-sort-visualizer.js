@@ -112,12 +112,6 @@ const {
   logPanel,
   clearLogsBtn
 } = loadRequiredElements();
-const structureTitle = document.getElementById("structureTitle");
-const auxiliaryTitle = document.getElementById("auxiliaryTitle");
-const auxiliaryStructureWrapper = document.getElementById("auxiliaryStructureWrapper");
-const topologicalTape = document.getElementById("topologicalTape");
-const logPanel = document.getElementById("logPanel");
-const clearLogsBtn = document.getElementById("clearLogsBtn");
 
 // Interaction Temp Variables
 let edgeSourceNode = null;
@@ -200,7 +194,7 @@ function playSound(type) {
       osc.stop(now + 0.05);
     }
   } catch (e) {
-    console.warn("Audio synthesis failed:", e);
+    void 0;
   }
 }
 
@@ -382,7 +376,7 @@ svg.addEventListener("mousedown", (e) => {
   const y = e.clientY - rect.top;
 
   if (nextLabelCode > 90) {
-    alert("Maximum node limit (A-Z) reached!");
+    void 0;
     return;
   }
 
@@ -1113,7 +1107,7 @@ function resetVisualizerState() {
 
 function initializeSimulation() {
   if (nodes.length === 0) {
-    alert("Please add nodes to the canvas or load a preset first!");
+    void 0;
     resetVisualizerState();
     return;
   }

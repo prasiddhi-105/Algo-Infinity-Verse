@@ -12,7 +12,7 @@
     <!-- Chart.js for real-time operation plotting -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="evolution-simulator.css" />
 
     <!-- Theme Initialization Script -->
@@ -30,6 +30,7 @@
         } catch (e) {}
       })();
     </script>
+  <script src="/theme.js"></script>
 </head>
 <body class="evo-body">
 
@@ -79,10 +80,10 @@ function evolve(arr) {
                 </div>
 
                 <div class="control-actions">
-                    <button class="btn btn-primary w-100" id="btnStartEvo">
+                    <button type="button" class="btn btn-primary w-100" id="btnStartEvo">
                         <i class="fas fa-bolt"></i> Start Evolution
                     </button>
-                    <button class="btn btn-danger w-100 hidden" id="btnStopEvo">
+                    <button type="button" class="btn btn-danger w-100 hidden" id="btnStopEvo">
                         <i class="fas fa-stop"></i> Halt Simulation
                     </button>
                 </div>
@@ -137,3 +138,4 @@ function evolve(arr) {
     <script src="evolution-simulator.js"></script>
 </body>
 </html>
+

@@ -1,5 +1,5 @@
-{
-  "buildCommand": "npm run build",
+{  
+  
   "outputDirectory": ".",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
@@ -26,8 +26,12 @@
       "destination": "/javascript-learning.html"
     },
     {
-      "source": "/dbms-learning",
-      "destination": "/dbms-learning.html"
+      "source": "/memory-scanner",
+      "destination": "/memory-scanner.html"
+    },
+    {
+      "source": "/practice",
+      "destination": "/pages/practice/problems.html"
     },
     {
       "source": "/cplusplus-learning",
@@ -81,6 +85,15 @@
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/scripts/(.*)\\.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/javascript; charset=utf-8"
         }
       ]
     }

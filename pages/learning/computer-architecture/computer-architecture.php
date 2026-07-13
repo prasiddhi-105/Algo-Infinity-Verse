@@ -19,7 +19,7 @@
   <body>
     
     <!-- Loading Screen -->
-    <div id="loading-screen">
+    <div id="loading-screen" class="hidden">
       <div class="loader">
         <div class="infinity-loader">∞</div>
         <h2>Algo Infinity Verse</h2>
@@ -108,7 +108,11 @@
               <i class="fas fa-user"></i>
               My Profile
             </a>
-            <a href="resume.html" class="dropdown-item" role="menuitem">
+            <a href="/execution-history.html" class="dropdown-item" role="menuitem">
+              <i class="fas fa-history"></i>
+              Execution History
+            </a>
+            <a href="/pages/career/resume/resume.html" class="dropdown-item" role="menuitem">
               <i class="fas fa-file-alt"></i>
               Coding Resume
             </a>
@@ -122,12 +126,6 @@
               Sign Up
             </a>
           </div>
-        </li>
-        <li class="nav-item nav-cta desktop-only">
-          <a href="index.html#practice" class="btn btn-primary nav-cta-btn">
-            <i class="fas fa-rocket"></i>
-            Start Learning
-          </a>
         </li>
       </ul>
       <div class="nav-buttons">
@@ -878,7 +876,7 @@ Result (-5): 11111011</code></pre>
               <li><a href="tree-traversal.html">Tree Traversal</a></li>
               <li><a href="sorting-visualizer.html">Sorting Visualizer</a></li>
               <li><a href="graph-visualizer.html">Graph Visualizer</a></li>
-              <li><a href="resume.html">Coding Resume</a></li>
+              <li><a href="/pages/career/resume/resume.html">Coding Resume</a></li>
               <li><a href="support-page/index.html">Support</a></li>
               <li><a href="feedback.html">Feedback</a></li>
               <li><a href="about-us.html">About us</a></li>

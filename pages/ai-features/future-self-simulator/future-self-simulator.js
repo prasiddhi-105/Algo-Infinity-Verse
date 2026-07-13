@@ -1,13 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  initLoadingScreen();
   initNavbar();
   initScrollTop();
   initFutureSelfSimulator();
 });
-
-function initLoadingScreen() {
-  setTimeout(() => { const s = document.getElementById("loading-screen"); if (s) s.classList.add("hidden"); }, 1500);
-}
 
 function initScrollTop() {
   const btn = document.getElementById("scrollTopBtn");
@@ -61,8 +56,7 @@ function initNavbar() {
    based on how long it's been since last review relative to the
    current SM-2 interval.
 
-   All data is stored client-side in localStorage. No backend or
-   login required.
+    All data is stored client-side in localStorage.
    ───────────────────────────────────────────── */
 
 const STORAGE_KEY = "futureSelfSimulator";
@@ -139,7 +133,6 @@ function loadCards() {
   } catch {
     return [];
   }
-}
 }
 
 function saveCards(cards) {
@@ -359,7 +352,7 @@ function initFutureSelfSimulator() {
   });
 
   clearBtn?.addEventListener("click", () => {
-    if (!confirm("Clear all tracked topics? This cannot be undone.")) return;
+    if (!false /* confirm removed */) return;
     localStorage.removeItem(STORAGE_KEY);
     renderAll([]);
     showLogMessage("All data cleared.", "success");

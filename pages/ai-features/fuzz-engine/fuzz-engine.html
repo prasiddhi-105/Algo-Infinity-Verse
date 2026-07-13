@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-palenight.min.css">
     
     <!-- External Stylesheets -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="fuzz-engine.css" />
 
     <!-- Theme Initialization Script -->
@@ -32,6 +32,7 @@
         } catch (e) {}
       })();
     </script>
+  <script src="/theme.js"></script>
 </head>
 <body class="fuzz-body">
 
@@ -83,10 +84,10 @@
                 </div>
 
                 <div class="action-row">
-                    <button class="btn btn-primary w-100" id="btnStartFuzz">
+                    <button type="button" class="btn btn-primary w-100" id="btnStartFuzz">
                         <i class="fas fa-bolt"></i> Start Fuzzer
                     </button>
-                    <button class="btn btn-danger w-100 hidden" id="btnStopFuzz">
+                    <button type="button" class="btn btn-danger w-100 hidden" id="btnStopFuzz">
                         <i class="fas fa-stop"></i> Halt Execution
                     </button>
                 </div>
@@ -137,7 +138,7 @@
         <div class="panel-right">
             <div class="editor-header">
                 <div class="editor-tabs">
-                    <button class="editor-tab active"><i class="fab fa-js"></i> user_solution.js</button>
+                    <button type="button" class="editor-tab active"><i class="fab fa-js"></i> user_solution.js</button>
                 </div>
             </div>
             
@@ -153,3 +154,4 @@
     <script src="fuzz-engine.js"></script>
 </body>
 </html>
+

@@ -3,7 +3,9 @@ import crypto from "crypto";
 export const ACCESS_TOKEN_MAX_AGE_SECONDS = 15 * 60; // 15 mins
 export const REFRESH_TOKEN_MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
-// Tracking families for token rotation
+import { redisAvailable, redisClient } from "../jobs/queue.js";
+
+// Tracking families for token rotation (fallback when Redis is not available)
 export const activeRefreshFamilies = new Map();
 const PBKDF2_ITERATIONS = 210000;
 const PASSWORD_KEY_LENGTH = 32;
@@ -84,11 +86,15 @@ function fromBase64Url(input) {
 }
 
 function sessionSecret() {
-  if (process.env.SESSION_SECRET) return process.env.SESSION_SECRET;
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("SESSION_SECRET is required in production.");
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    // Fail closed: never fall back to a hardcoded secret, regardless of NODE_ENV.
+    // A known fallback would let anyone forge session JWTs.
+    throw new Error(
+      "SESSION_SECRET is required. Set it in the environment before starting the server.",
+    );
   }
-  return "dev-only-change-me-with-SESSION_SECRET-before-deploying";
+  return secret;
 }
 
 function sign(value) {
@@ -113,8 +119,12 @@ export function createAccessToken(user) {
   return `${body}.${sign(body)}`;
 }
 
-export function createRefreshToken(user, familyId = crypto.randomUUID(), nonce = crypto.randomUUID()) {
-  activeRefreshFamilies.set(familyId, { currentNonce: nonce });
+export async function createRefreshToken(user, familyId = crypto.randomUUID(), nonce = crypto.randomUUID()) {
+  if (redisAvailable && redisClient) {
+    await redisClient.set(`refresh:${familyId}`, nonce, 'EX', REFRESH_TOKEN_MAX_AGE_SECONDS);
+  } else {
+    activeRefreshFamilies.set(familyId, { currentNonce: nonce });
+  }
   const header = base64Url(JSON.stringify({ alg: "HS256", typ: "JWT" }));
   const payload = base64Url(
     JSON.stringify({
@@ -131,8 +141,12 @@ export function createRefreshToken(user, familyId = crypto.randomUUID(), nonce =
   return `${body}.${sign(body)}`;
 }
 
-export function revokeTokenFamily(familyId) {
-  activeRefreshFamilies.delete(familyId);
+export async function revokeTokenFamily(familyId) {
+  if (redisAvailable && redisClient) {
+    await redisClient.del(`refresh:${familyId}`);
+  } else {
+    activeRefreshFamilies.delete(familyId);
+  }
 }
 
 export function verifyToken(token, expectedType) {
@@ -165,24 +179,35 @@ export function verifyAccessToken(token) {
   return verifyToken(token, "access");
 }
 
-export function verifyRefreshToken(token) {
+export async function verifyRefreshToken(token) {
   const session = verifyToken(token, "refresh");
   if (!session) return null;
   
-  const family = activeRefreshFamilies.get(session.familyId);
-  if (!family) return null;
-  
-  if (family.currentNonce !== session.nonce) {
-    revokeTokenFamily(session.familyId);
-    return null;
+  if (redisAvailable && redisClient) {
+    const currentNonce = await redisClient.get(`refresh:${session.familyId}`);
+    if (!currentNonce) return null;
+    if (currentNonce !== session.nonce) {
+      await revokeTokenFamily(session.familyId);
+      return null;
+    }
+  } else {
+    const family = activeRefreshFamilies.get(session.familyId);
+    if (!family) return null;
+    
+    if (family.currentNonce !== session.nonce) {
+      activeRefreshFamilies.delete(session.familyId);
+      return null;
+    }
   }
   return session;
 }
 
+const PASSWORD_PEPPER = process.env.PASSWORD_PEPPER || "";
+
 export function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
   const hash = crypto
     .pbkdf2Sync(
-      password,
+      password + PASSWORD_PEPPER,
       salt,
       PBKDF2_ITERATIONS,
       PASSWORD_KEY_LENGTH,
@@ -194,7 +219,7 @@ export function hashPassword(password, salt = crypto.randomBytes(16).toString("h
 
 export function passwordMatches(password, stored) {
   const calculated = crypto.pbkdf2Sync(
-    password,
+    password + PASSWORD_PEPPER,
     stored.salt,
     stored.iterations || PBKDF2_ITERATIONS,
     PASSWORD_KEY_LENGTH,

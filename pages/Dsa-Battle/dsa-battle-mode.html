@@ -1,17 +1,23 @@
 <!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dsa Battle Mode | Algo Infinity Verse</title>
     <link rel="stylesheet" href="../../styles.css" />
     <link rel="stylesheet" href="dsa-battle-mode.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
     <!-- Theme Initialization Script -->
     <script>
-      (function() {
+      (function () {
         try {
           var storedTheme = localStorage.getItem('theme');
           var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
@@ -24,7 +30,7 @@
         } catch (e) {}
       })();
     </script>
-</head>
+  </head>
   <body data-page="dsa-battle-mode">
     <div id="loading-screen">
       <div class="loader">
@@ -34,359 +40,277 @@
       </div>
     </div>
 
-    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+    <button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
       <i class="fas fa-circle-chevron-up"></i>
     </button>
 
-    <nav class="navbar">
-      <div class="nav-logo">
-        <span class="logo-text">∞</span>
-        <span class="logo-title">Algo Infinity Verse</span>
-      </div>
-      <ul class="nav-links" id="navLinks">
-        <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
-        <li class="nav-item has-dropdown">
-          <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <span>Learn</span><i class="fas fa-chevron-down dropdown-icon"></i>
-          </button>
-          <div class="dropdown-menu" role="menu">
-            <a href="index.html#topics" class="dropdown-item" role="menuitem">DSA Topics</a>
-            <a href="index.html#practice" class="dropdown-item" role="menuitem">Practice Problems</a>
-            <a href="index.html#quiz" class="dropdown-item" role="menuitem">Quizzes</a>
-            <a href="index.html#roadmap" class="dropdown-item" role="menuitem">Learning Roadmap</a>
-            <a href="algorithm-timeline.html" class="dropdown-item" role="menuitem">Algorithm Timeline</a>
-            <a href="concept-bridge.html" class="dropdown-item" role="menuitem">Concept Bridge Trainer</a>
-            <a href="python-learning.html" class="dropdown-item" role="menuitem">Learn Python</a>
-            <a href="linkedlist-learning.html" class="dropdown-item" role="menuitem">Learn Linked Lists</a>
-            <a href="javascript-learning.html" class="dropdown-item" role="menuitem">Learn JavaScript</a>
-            <a href="sorting-visualizer.html" class="dropdown-item" role="menuitem">Sorting Visualizer</a>
-            <a href="graph-visualizer.html" class="dropdown-item" role="menuitem">Graph Visualizer</a>
-            <a href="ds-selection-assistant.html" class="dropdown-item" role="menuitem">DS Selection Assistant</a>
-            <a href="dry-run-simulator.html" class="dropdown-item" role="menuitem">Dry Run Simulator</a>
-            <a href="dsa-battle-mode.html" class="dropdown-item active" role="menuitem">Dsa Battle Mode</a>
-        </div>
-        </li>
-        <li class="nav-item has-dropdown">
-          <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <span>Interview</span><i class="fas fa-chevron-down dropdown-icon"></i>
-          </button>
-          <div class="dropdown-menu" role="menu">
-            <a href="cheat-sheets.html" class="dropdown-item" role="menuitem">DSA Cheat Sheets</a>
-            <a href="system-design.html" class="dropdown-item" role="menuitem">System Design</a>
-            <a href="behavioral-questions.html" class="dropdown-item" role="menuitem">Behavioral Questions</a>
-            <a href="api-design-learning.html" class="dropdown-item" role="menuitem">API Design</a>
-            <a href="cache-learning.html" class="dropdown-item" role="menuitem">Cache Systems (LRU/LFU)</a>
-            <a href="company-interview.html" class="dropdown-item" role="menuitem">Company Question Bank</a>
-          </div>
-        </li>
-        <li class="nav-item has-dropdown">
-          <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <span>Community</span><i class="fas fa-chevron-down dropdown-icon"></i>
-          </button>
-          <div class="dropdown-menu" role="menu">
-            <a href="community.html" class="dropdown-item" role="menuitem">Discussions</a>
-            <a href="support-page/index.html" class="dropdown-item" role="menuitem">Support</a>
-            <a href="feedback.html" class="dropdown-item" role="menuitem">Feedback</a>
-          </div>
-        </li>
-        <li class="nav-item has-dropdown nav-profile-dropdown">
-          <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <span>Profile</span><i class="fas fa-chevron-down dropdown-icon"></i>
-          </button>
-          <div class="dropdown-menu dropdown-menu-end" role="menu">
-            <a href="index.html#dashboard" class="dropdown-item" role="menuitem"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="resume.html" class="dropdown-item" role="menuitem"><i class="fas fa-file-alt"></i> Coding Resume</a>
-            <div class="dropdown-divider"></div>
-            <a href="login.html" class="dropdown-item nav-auth-link" id="navLoginBtn"><i class="fas fa-sign-in-alt"></i> Sign In</a>
-            <a href="signup.html" class="dropdown-item nav-auth-link" id="navSignupBtn"><i class="fas fa-user-plus"></i> Sign Up</a>
-          </div>
-        </li>
-        <li class="nav-item nav-cta desktop-only">
-          <a href="index.html#practice" class="btn btn-primary nav-cta-btn"><i class="fas fa-rocket"></i> Start Learning</a>
-        </li>
-      </ul>
-      <div class="nav-buttons">
-        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
-        <button id="menuToggle" class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
-      </div>
-    </nav>
-
     <div id="navbar-placeholder"></div>
 
-<section class="hero battle-hero">
-<div class="hero-background">
-<div class="stars"></div>
-<div class="stars2"></div>
-<div class="stars3"></div>
-</div>
+    <section class="hero battle-hero">
+      <div class="hero-background">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+      </div>
 
-<div class="hero-content">
-<h1 class="hero-title">
-<span class="title-line">⚔ Competitive Learning</span>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="title-line">⚔ Competitive Learning</span>
 
-<span class="main-title">
-DSA Battle Mode
-</span>
+          <span class="main-title"> DSA Battle Mode </span>
 
-<span class="subtitle">
-Challenge your friends in real-time DSA battles and earn XP.
-</span>
-</h1>
+          <span class="subtitle">
+            Challenge your friends in real-time DSA battles and earn XP.
+          </span>
+        </h1>
 
-<div class="hero-buttons">
-<a href="#battle-lobby" class="btn btn-primary">
-Start Battle
-</a>
+        <div class="hero-buttons">
+          <a href="#battle-lobby" class="btn btn-primary"> Start Battle </a>
 
-<a href="#history" class="btn btn-secondary">
-Match History
-</a>
-</div>
-</div>
-</section>
+          <a href="#history" class="btn btn-secondary"> Match History </a>
+        </div>
+      </div>
+    </section>
 
-<section class="section">
-<div class="container">
+    <section class="section">
+      <div class="container">
+        <div class="hero-stats">
+          <div class="stat-box">
+            <span class="stat-number">1v1</span>
+            <span class="stat-label">Battles</span>
+          </div>
 
-<div class="hero-stats">
+          <div class="stat-box">
+            <span class="stat-number">XP</span>
+            <span class="stat-label">Rewards</span>
+          </div>
 
-<div class="stat-box">
-<span class="stat-number">1v1</span>
-<span class="stat-label">Battles</span>
-</div>
+          <div class="stat-box">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Challenges</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="stat-box">
-<span class="stat-number">XP</span>
-<span class="stat-label">Rewards</span>
-</div>
-
-<div class="stat-box">
-<span class="stat-number">∞</span>
-<span class="stat-label">Challenges</span>
-</div>
-
-</div>
-
-</div>
-</section>
-
-<!-- Battle Lobby -->
-<section id="battle-lobby" class="battle-lobby">
-    <h2 class="section-title">Battle Lobby</h2>
-
-    <div class="input-group" style="margin-top:2rem">
-      <label for="joinBattleId">Got a Battle ID? Join here</label>
-      <input type="text" id="joinBattleId" class="search-bar" placeholder="Paste Battle ID">
-    </div>
-    <button id="joinBattleBtn" class="btn btn-secondary" style="margin:auto; min-width:250px;">
-      Join Battle
-    </button>
-    <div class="battle-card">
-
-        <!-- Lobby Header -->
+    <!-- Matchmaking Lobby -->
+    <section id="battle-lobby" class="battle-lobby">
+      <h2 class="section-title">Battle Matchmaking</h2>
+      <div class="battle-card" style="text-align: center; max-width: 600px; margin: 0 auto;">
         <div class="lobby-header">
-            <i class="fas fa-trophy"></i>
-            <h3>Create New Battle</h3>
-            <p>
-                Challenge your friends, test your DSA skills,
-                and earn XP rewards by solving coding problems.
-            </p>
+          <i class="fas fa-search"></i>
+          <h3>Find a Match</h3>
+          <p>Get paired with an opponent of similar skill to battle in real-time!</p>
         </div>
 
-        <!-- Opponent Input -->
-        <div class="input-group">
-            <label for="opponentEmail">Opponent Email</label>
-              <input
-                  type="email"
-                  id="opponentEmail"
-                  class="search-bar"
-                  placeholder="Enter opponent's registered email"
-              >
+        <div class="input-group" style="text-align: left;">
+          <label for="difficultySelect">Select Difficulty</label>
+          <select id="difficultySelect" class="search-bar" style="width: 100%; padding: 0.8rem;">
+            <option value="Easy">🟢 Easy • 50 XP</option>
+            <option value="Medium">🟡 Medium • 100 XP</option>
+            <option value="Hard">🔴 Hard • 150 XP</option>
+          </select>
         </div>
 
-        <!-- Difficulty Selection -->
-        <div class="input-group">
-            <label for="difficultySelect">
-                Difficulty Level
-            </label>
+        <button type="button" id="findMatchBtn" class="btn btn-primary" style="margin-top: 1rem; width: 100%; font-size: 1.2rem;">
+          Find Match <i class="fas fa-crosshairs"></i>
+        </button>
 
-            <select
-                id="difficultySelect"
-                class="search-bar"
+        <div id="matchmakingStatus" style="display: none; margin-top: 1rem;">
+          <p style="color: var(--primary-color);">Searching for an opponent... <i class="fas fa-spinner fa-spin"></i></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Split-Screen Battle -->
+    <section id="active-battle" class="section" style="display: none">
+      <div class="container" style="max-width: 1400px; width: 95%;">
+        
+        <div class="split-screen-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; min-height: 70vh;">
+          
+          <!-- Left Pane: Problem & Progress -->
+          <div class="battle-info-card battle-card" style="display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 id="problemTitle" style="margin: 0; color: var(--primary-color);">Problem Title</h3>
+              <div class="timer-box" style="font-size: 1.5rem; font-weight: bold; color: #ef4444;">
+                ⏳ <span id="timer">300</span>s
+              </div>
+            </div>
+            <p>Difficulty: <span id="difficultyBadge" class="difficulty-badge">Easy</span></p>
+            <p id="problemDescription" style="flex-grow: 1; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">Description</p>
+            
+            <div class="progress-section" style="margin-top: 2rem;">
+              <h4>Battle Progress</h4>
+              
+              <!-- Your Progress -->
+              <div class="progress-bar-container" style="margin: 1rem 0;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="font-weight: bold;">You (<span id="myUsernameDisplay"></span>)</span>
+                  <span id="myProgressText">0%</span>
+                </div>
+                <div style="width: 100%; background: #333; height: 12px; border-radius: 6px; margin-top: 0.5rem; overflow: hidden;">
+                  <div id="myProgressBar" style="width: 0%; height: 100%; background: #22c55e; transition: width 0.3s ease;"></div>
+                </div>
+              </div>
+
+              <!-- Opponent Progress -->
+              <div class="progress-bar-container" style="margin: 1rem 0;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="font-weight: bold;">Opponent (<span id="opponentNameDisplay"></span>)</span>
+                  <span id="opponentProgressText">0%</span>
+                </div>
+                <div style="width: 100%; background: #333; height: 12px; border-radius: 6px; margin-top: 0.5rem; overflow: hidden;">
+                  <div id="opponentProgressBar" style="width: 0%; height: 100%; background: #ef4444; transition: width 0.3s ease;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Pane: Code Editor -->
+          <div class="battle-editor battle-card" style="display: flex; flex-direction: column;">
+            <h3 style="margin-bottom: 1rem;">Code Editor</h3>
+            <textarea id="solutionCode" placeholder="function solve(arr) {&#10;  // Write your logic here&#10;}" style="flex-grow: 1; background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 1rem; border-radius: 8px; border: 1px solid #333; resize: none; font-size: 1rem;"></textarea>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+              <span id="submitStatusMsg" style="color: #eab308; font-weight: bold;"></span>
+              <button type="button" id="submitSolutionBtn" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                Submit Solution <i class="fas fa-play"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Spectator Modal -->
+    <div
+      id="spectatorModal"
+      class="modal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        class="modal-content"
+        style="
+          background: var(--bg-card);
+          padding: 2rem;
+          border-radius: 12px;
+          width: 80%;
+          max-width: 800px;
+          position: relative;
+        "
+      >
+        <h3>Spectating: <span id="spectatorTargetName"></span></h3>
+        <div class="spectator-editor-container" style="position: relative; margin-top: 1rem">
+          <textarea
+            id="spectatorCode"
+            readonly
+            style="
+              width: 100%;
+              height: 400px;
+              background: #1e1e1e;
+              color: #d4d4d4;
+              font-family: monospace;
+              padding: 1rem;
+              border: 1px solid var(--border-color);
+            "
+          ></textarea>
+          <!-- Cursor Overlay -->
+          <div
+            id="spectatorCursor"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 2px;
+              height: 1.2em;
+              background: cyan;
+              display: none;
+              pointer-events: none;
+            "
+          >
+            <span
+              style="
+                position: absolute;
+                top: -1.2em;
+                left: 0;
+                background: cyan;
+                color: black;
+                font-size: 10px;
+                padding: 2px;
+                border-radius: 4px;
+                white-space: nowrap;
+              "
+              >Cursor</span
             >
-                <option value="Easy">
-                    🟢 Easy • 50 XP
-                </option>
-
-                <option value="Medium">
-                    🟡 Medium • 100 XP
-                </option>
-
-                <option value="Hard">
-                    🔴 Hard • 150 XP
-                </option>
-            </select>
+          </div>
         </div>
-
-        <!-- Difficulty Preview -->
-        <div class="difficulty-preview">
-
-            <div class="difficulty-box easy-box">
-                <span>🟢</span>
-                <h4>Easy</h4>
-                <p>50 XP</p>
-            </div>
-
-            <div class="difficulty-box medium-box">
-                <span>🟡</span>
-                <h4>Medium</h4>
-                <p>100 XP</p>
-            </div>
-
-            <div class="difficulty-box hard-box">
-                <span>🔴</span>
-                <h4>Hard</h4>
-                <p>150 XP</p>
-            </div>
-
-        </div>
-
-        <!-- Start Button -->
         <button
-            id="startBattleBtn"
-            class="btn btn-primary"
+          type="button"
+          id="closeSpectatorBtn"
+          class="btn btn-secondary"
+          style="margin-top: 1rem"
         >
-            ⚔️ Start Challenge
+          Close
         </button>
-
-        <!-- Status + Join (added for backend integration) -->
-        <p id="battleStatusMsg" style="color:#06b6d4;text-align:center;margin-top:1rem;"></p>
-
-        <div class="input-group" style="margin-top:2rem">
-            <label for="joinBattleId">Got a Battle ID? Join here</label>
-            <input type="text" id="joinBattleId" class="search-bar" placeholder="Paste Battle ID">
-        </div>
-        <button id="joinBattleBtn" class="btn btn-secondary"
-                style="margin:auto;min-width:250px;">
-            Join Battle
-        </button>
-        <p
-            id="battleStatusMsg"
-            role="status"
-            aria-live="polite"
-            style="color:`#06b6d4`;text-align:center;margin-top:1rem;"
-        ></p>
-
-    </div>
-</section>
-
-<section class="section">
-  <div class="container">
-
-    <h2 class="section-title">Active Battle</h2>
-
-    <div class="battle-container">
-
-      <div class="battle-info-card">
-
-        <h3 id="problemTitle">Two Sum Challenge</h3>
-        <p id="problemDescription">
-        Find two numbers whose sum equals the target.
-        </p>
-
-        <p>
-          Opponent:
-          <span id="currentOpponent">
-            Waiting...
-          </span>
-        </p>
-
-        <p>
-          Difficulty:
-          <span id="difficultyBadge" class="difficulty-badge">
-            Easy
-          </span>
-        </p>
-
-        <div class="timer-box">
-          ⏳ <span id="timer">300</span>s
-        </div>
-
       </div>
-
-      <div class="battle-editor">
-
-        <textarea
-          id="solutionCode"
-          placeholder="Write your solution here..."
-        ></textarea>
-
-        <button
-          id="submitSolutionBtn"
-          class="btn btn-primary"
-        >
-          Submit Solution
-        </button>
-
-      </div>
-
     </div>
 
-  </div>
-</section>
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Battle Result</h2>
 
-<section class="section">
+        <div class="battle-card">
+          <h3 id="winnerText">Winner: -</h3>
 
-<div class="container">
+          <p>
+            XP Earned:
+            <span id="xpReward"> 0 </span>
+          </p>
+        </div>
+      </div>
+    </section>
 
-<h2 class="section-title">
-Battle Result
-</h2>
+    <section id="history" class="section">
+      <div class="container">
+        <h2 class="section-title">Match History</h2>
 
-<div class="battle-card">
+        <div class="history-grid" id="historyGrid"></div>
+      </div>
+    </section>
 
-<h3 id="winnerText">
-Winner: -
-</h3>
+    <div id="footer-placeholder"></div>
 
-<p>
-XP Earned:
-<span id="xpReward">
-0
-</span>
-</p>
 
-</div>
-
-</div>
-
-</section>
-
-<section id="history" class="section">
-
-<div class="container">
-
-<h2 class="section-title">
-Match History
-</h2>
-
-<div class="history-grid" id="historyGrid"></div>
-
-</div>
-
-</section>
-
-<div id="footer-placeholder"></div>
-
-<script src="dsa-battle-mode.js"></script>
-<script src="script.js"></script>
-<script src="/theme.js"></script>
-<script src="/script.js"></script>
-<script src="/auth.js"></script>
-<script src="/theme.js"></script>
-<script>
-  loadPartial('navbar-placeholder', '/partials/navbar.html');
-  loadPartial('footer-placeholder', '/partials/footer.html');
-</script>
-</body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="dsa-battle-mode.js?v=2"></script>
+    <script src="/script.js?v=2"></script>
+    <script src="/theme.js"></script>
+    <script src="/auth.js"></script>
+    <script>
+      try {
+        loadPartial('navbar-placeholder', '/partials/navbar.html');
+        loadPartial('footer-placeholder', '/partials/footer.html');
+      } catch (e) {
+        console.error(e);
+      }
+      
+      // Failsafe to always hide loader
+      setTimeout(() => {
+        const ls = document.getElementById('loading-screen');
+        if (ls) ls.style.display = 'none';
+      }, 2500);
+    </script>
+  </body>
 </html>

@@ -94,6 +94,7 @@
         } catch (e) {}
       })();
     </script>
+  <script src="/theme.js"></script>
 </head>
   <body data-page="repo-analyzer">
     <!-- Loading Screen -->
@@ -119,7 +120,7 @@
         <div class="glass-card p-4">
           <div class="repo-input-group">
             <input type="url" id="repoUrlInput" placeholder="https://github.com/username/repository" required />
-            <button id="analyzeBtn" class="btn btn-primary">
+            <button type="button" id="analyzeBtn" class="btn btn-primary">
               <i class="fas fa-search"></i> Analyze
             </button>
           </div>
@@ -158,10 +159,14 @@
 
     <script type="module" src="repo-analyzer.js"></script>
     <script src="/auth.js"></script>
+    <script src="/bootstrap-legacy.js"></script>
+
     <script src="/script.js"></script>
+    <script type="module" src="/dist/legacy-bundle.mjs"></script>
     <script>
       loadPartial('navbar-placeholder', '/partials/navbar.html');
       loadPartial('footer-placeholder', '/partials/footer.html');
     </script>
   </body>
 </html>
+

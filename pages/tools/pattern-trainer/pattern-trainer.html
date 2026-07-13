@@ -26,15 +26,7 @@
     </script>
 </head>
   <body data-page="pattern-trainer">
-    <div id="loading-screen">
-      <div class="loader">
-        <div class="infinity-loader">∞</div>
-        <h2>Algo Infinity Verse</h2>
-        <div class="loading-bar"><div class="loading-progress"></div></div>
-      </div>
-    </div>
-
-    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+    <button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
       <i class="fas fa-circle-chevron-up"></i>
     </button>
 
@@ -54,7 +46,7 @@
         <p class="section-subtitle">Read a problem, identify the correct DSA pattern, and learn why it applies. Build the intuition that separates good engineers from great ones.</p>
         <div class="hero-buttons">
           <a href="#trainer" class="btn btn-primary"><i class="fas fa-brain"></i> Start Training</a>
-          <a href="/index.html#practice" class="btn btn-secondary"><i class="fas fa-code"></i> Practice Problems</a>
+          <a href="/pages/practice/problems.html" class="btn btn-secondary"><i class="fas fa-code"></i> Practice Problems</a>
         </div>
       </div>
     </section>
@@ -103,7 +95,7 @@
             </div>
 
             <!-- Next -->
-            <button class="btn btn-primary pt-next-btn hidden" id="ptNextBtn">
+            <button type="button" class="btn btn-primary pt-next-btn hidden" id="ptNextBtn">
               Next Question <i class="fas fa-arrow-right"></i>
             </button>
           </div>
@@ -125,8 +117,8 @@
 
             <!-- Actions -->
             <div class="pt-sidebar-card">
-              <button class="btn btn-secondary pt-full-btn" id="ptRestartBtn"><i class="fas fa-undo"></i> Restart</button>
-              <button class="btn btn-secondary pt-full-btn" id="ptSkipBtn" style="margin-top:0.5rem"><i class="fas fa-forward"></i> Skip Question</button>
+              <button type="button" class="btn btn-secondary pt-full-btn" id="ptRestartBtn"><i class="fas fa-undo"></i> Restart</button>
+              <button type="button" class="btn btn-secondary pt-full-btn" id="ptSkipBtn" style="margin-top:0.5rem"><i class="fas fa-forward"></i> Skip Question</button>
             </div>
 
           </div>
@@ -142,7 +134,7 @@
         </div>
         <div class="modal-body pt-result-body" id="ptResultBody"></div>
         <div class="modal-footer">
-          <button class="btn btn-primary" id="ptPlayAgainBtn"><i class="fas fa-redo"></i> Play Again</button>
+          <button type="button" class="btn btn-primary" id="ptPlayAgainBtn"><i class="fas fa-redo"></i> Play Again</button>
         </div>
       </div>
     </div>
@@ -150,7 +142,10 @@
     <div id="footer-placeholder"></div>
 
     <script src="/auth.js"></script>
+    <script src="/bootstrap-legacy.js"></script>
+
     <script src="/script.js"></script>
+    <script type="module" src="/dist/legacy-bundle.mjs"></script>
     <script src="/theme.js"></script>
     <script src="./pattern-trainer.js"></script>
   

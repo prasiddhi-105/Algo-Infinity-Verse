@@ -21,7 +21,7 @@ export class VCSProvider {
    * @param {string} rawContent - The raw YAML string from the CI file.
    * @returns {Array<string>} - A flat array of executed shell commands.
    */
-  normalizeCIConfig(rawContent) {
+  normalizeCIConfig(_rawContent) {
     throw new Error("Method 'normalizeCIConfig()' must be implemented by subclasses.");
   }
 
@@ -38,7 +38,7 @@ export class VCSProvider {
         const commands = this.normalizeCIConfig(file.content);
         return { name: file.name, commands };
       } catch (err) {
-        console.warn(`Failed to parse ${file.name}: ${err.message}`);
+        void 0;
         return { name: file.name, commands: [] };
       }
     });

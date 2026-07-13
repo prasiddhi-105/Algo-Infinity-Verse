@@ -30,11 +30,12 @@
         } catch (e) {}
       })();
     </script>
+  <script src="/theme.js"></script>
 </head>
 
 <body data-page="algorithm-genetics-lab">
     <!-- Loading Screen -->
-    <div id="loading-screen">
+    <div id="loading-screen" class="hidden">
         <div class="loader">
             <div class="infinity-loader">∞</div>
             <h2>Algo Infinity Verse</h2>
@@ -85,9 +86,9 @@
             </div>
             
             <div class="zoom-controls">
-                <button id="zoom-in" aria-label="Zoom In"><i class="fas fa-plus"></i></button>
-                <button id="zoom-reset" aria-label="Reset Zoom"><i class="fas fa-expand"></i></button>
-                <button id="zoom-out" aria-label="Zoom Out"><i class="fas fa-minus"></i></button>
+                <button type="button" id="zoom-in" aria-label="Zoom In"><i class="fas fa-plus"></i></button>
+                <button type="button" id="zoom-reset" aria-label="Reset Zoom"><i class="fas fa-expand"></i></button>
+                <button type="button" id="zoom-out" aria-label="Zoom Out"><i class="fas fa-minus"></i></button>
             </div>
         </aside>
 
@@ -196,3 +197,4 @@
 </body>
 
 </html>
+

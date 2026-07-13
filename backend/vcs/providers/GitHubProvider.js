@@ -4,19 +4,22 @@ import * as yaml from 'js-yaml';
 
 export class GitHubProvider extends VCSProvider {
   async getCIConfigFiles() {
-    const match = this.repoUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+    const match = this.repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
     if (!match) throw new Error("Invalid GitHub URL");
 
     const owner = match[1];
     const repo = match[2].replace(/\.git$/, '');
 
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/.github/workflows`;
-    const res = await fetch(apiUrl, {
-      headers: {
-        'User-Agent': 'Algo-Infinity-Verse-Analyzer',
-        'Accept': 'application/vnd.github.v3+json'
-      }
-    });
+    const headers = {
+      'User-Agent': 'Algo-Infinity-Verse-Analyzer',
+      'Accept': 'application/vnd.github.v3+json'
+    };
+    if (process.env.GITHUB_TOKEN) {
+      headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
+
+    const res = await fetch(apiUrl, { headers });
 
     if (!res.ok) {
       if (res.status === 404) return []; 
@@ -29,7 +32,7 @@ export class GitHubProvider extends VCSProvider {
     const yamlFiles = files.filter(f => f.name.endsWith('.yml') || f.name.endsWith('.yaml'));
     
     const workflows = await processInBatches(yamlFiles, async (file) => {
-      const fileRes = await fetch(file.download_url);
+      const fileRes = await fetch(file.download_url, { headers });
       if (fileRes.ok) {
         const content = await fileRes.text();
         return { name: file.name, content };

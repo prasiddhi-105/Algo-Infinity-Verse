@@ -15,6 +15,15 @@ class CodeExecutor {
         this.isPaused = false;
         this.isFinished = false;
         this.originalConsoleLog = console.log;
+        this.history = [{
+            currentLine: 0,
+            variables: {},
+            output: [],
+            trace: [],
+            explanation: "Ready to start execution."
+        }];
+        this.playInterval = null;
+        this.updateExplanationUI("Ready to start execution.");
     }
 
     // Step forward one line
@@ -23,6 +32,12 @@ class CodeExecutor {
             this.isFinished = true;
             this.addTrace('⏹️ Execution complete!');
             this.updateStatus('Finished');
+            this.updateExplanationUI("Execution complete! Click Reset to edit or run again.");
+            if (this.playInterval) {
+                clearInterval(this.playInterval);
+                this.playInterval = null;
+            }
+            if (typeof updateControlsUI === 'function') updateControlsUI();
             return false;
         }
 
@@ -53,12 +68,106 @@ class CodeExecutor {
                 this.updateStatus('Finished');
             }
 
+            // Generate step explanation
+            const explanation = this.generateExplanation(trimmed);
+            this.updateExplanationUI(explanation);
+
+            // Record snapshot in history
+            this.history.push({
+                currentLine: this.currentLine,
+                variables: JSON.parse(JSON.stringify(this.variables)),
+                output: [...this.output],
+                trace: [...this.trace],
+                explanation: explanation
+            });
+
+            if (typeof updateControlsUI === 'function') updateControlsUI();
             return true;
         } catch (error) {
             this.addTrace(`❌ Error: ${error.message}`);
             this.updateStatus('Error');
+            this.updateExplanationUI(`Runtime Error on line ${line.number}: ${error.message}`);
             this.isFinished = true;
+            if (this.playInterval) {
+                clearInterval(this.playInterval);
+                this.playInterval = null;
+            }
+            if (typeof updateControlsUI === 'function') updateControlsUI();
             return false;
+        }
+    }
+
+    // Step backward one line
+    stepBackward() {
+        if (this.history.length <= 1) {
+            this.reset();
+            return false;
+        }
+
+        // Pop the current step
+        this.history.pop();
+
+        // Restore state to previous step
+        const prevState = this.history[this.history.length - 1];
+        this.variables = JSON.parse(JSON.stringify(prevState.variables));
+        this.output = [...prevState.output];
+        this.trace = [...prevState.trace];
+        this.currentLine = prevState.currentLine;
+        this.isFinished = false;
+
+        this.highlightLine(this.currentLine);
+        this.updateVariables();
+        updateTraceUI(this.trace);
+        updateConsoleUI(this.output);
+        this.updateExplanationUI(prevState.explanation);
+        
+        if (this.currentLine === 0) {
+            this.updateStatus('Ready');
+        } else {
+            this.updateStatus(`Stepped back to Line ${this.currentLine}`);
+        }
+
+        if (typeof updateControlsUI === 'function') updateControlsUI();
+        return true;
+    }
+
+    // Generate readable explanations of what code does at runtime
+    generateExplanation(line) {
+        if (line.startsWith('console.log(')) {
+            const match = line.match(/console\.log\((.*)\)/);
+            if (match) {
+                const expr = match[1].trim();
+                const evaluatedVal = this.output[this.output.length - 1];
+                return `Line prints the expression <code>${expr}</code> to the console output.<br>Evaluated value printed: <strong style="color: var(--accent); font-family: monospace;">${evaluatedVal !== undefined ? evaluatedVal : 'undefined'}</strong>.`;
+            }
+            return "Executing <code>console.log</code> statement to output details.";
+        }
+
+        if (line.startsWith('let ')) {
+            const parts = line.replace('let ', '').split('=');
+            const varName = parts[0].trim();
+            const value = this.variables[varName];
+            const displayVal = typeof value === 'string' ? `"${value}"` : JSON.stringify(value);
+            return `Declaring local variable <code>${varName}</code> and initializing it to <strong style="color: #22c55e; font-family: monospace;">${displayVal !== undefined ? displayVal : 'undefined'}</strong>.`;
+        }
+
+        // Handle simple variable assignments
+        const assignmentMatch = line.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.+)/);
+        if (assignmentMatch) {
+            const varName = assignmentMatch[1];
+            const value = this.variables[varName];
+            const displayVal = typeof value === 'string' ? `"${value}"` : JSON.stringify(value);
+            return `Updating variable <code>${varName}</code> to <strong style="color: #22c55e; font-family: monospace;">${displayVal !== undefined ? displayVal : 'undefined'}</strong>.`;
+        }
+
+        return `Executing line: <code style="color: #cbd5e1; font-family: monospace;">${line}</code>.`;
+    }
+
+    // Update explanation panel
+    updateExplanationUI(text) {
+        const container = document.getElementById('explanationContainer');
+        if (container) {
+            container.innerHTML = `<div class="explanation-step-text" style="line-height: 1.6; font-size: 0.95rem;">${text}</div>`;
         }
     }
 
@@ -165,20 +274,25 @@ class CodeExecutor {
 
     // Update status
     updateStatus(status) {
-        document.getElementById('statusText').textContent = `⏹️ ${status}`;
+        const el = document.getElementById('statusText');
+        if (el) el.textContent = `⏹️ ${status}`;
     }
 
     // Highlight current line
     highlightLine(lineNumber) {
+        const highlightLineEl = document.getElementById('highlightLine');
+        if (!highlightLineEl) return;
         if (lineNumber <= 0) {
-            highlightLine.style.display = 'none';
+            highlightLineEl.style.display = 'none';
             return;
         }
         const lineHeight = 1.6 * 16; // ~25.6px
         const top = (lineNumber - 1) * lineHeight;
-        highlightLine.style.top = `${top}px`;
-        highlightLine.style.display = 'block';
-        document.getElementById('lineStatus').textContent = `Line: ${lineNumber}`;
+        highlightLineEl.style.top = `${top}px`;
+        highlightLineEl.style.display = 'block';
+        
+        const lineStatusEl = document.getElementById('lineStatus');
+        if (lineStatusEl) lineStatusEl.textContent = `Line: ${lineNumber}`;
     }
 
     // Update variables UI
@@ -209,10 +323,23 @@ class CodeExecutor {
         this.isFinished = false;
         this.highlightLine(0);
         this.updateVariables();
+        this.history = [{
+            currentLine: 0,
+            variables: {},
+            output: [],
+            trace: [],
+            explanation: "Ready to start execution."
+        }];
+        this.updateExplanationUI("Ready to start execution.");
         updateTraceUI([]);
         updateConsoleUI([]);
         this.updateStatus('Ready');
         console.log = this.originalConsoleLog;
+        if (this.playInterval) {
+            clearInterval(this.playInterval);
+            this.playInterval = null;
+        }
+        if (typeof updateControlsUI === 'function') updateControlsUI();
     }
 
     // Get the code lines
@@ -298,35 +425,196 @@ function getCodeFromEditor() {
 
 // Initialize executor
 function initExecutor() {
-    const code = getCodeFromEditor();
-    executor = new CodeExecutor(code);
-    executor.highlightLine(0);
-    return executor;
+    try {
+        const code = getCodeFromEditor();
+
+        executor = new CodeExecutor(code);
+        executor.highlightLine(0);
+
+        return executor;
+    } catch (error) {
+        console.error(error);
+
+        executor = null;
+
+        updateConsoleUI([
+            "Failed to initialize executor.",
+            error.message,
+        ]);
+
+        updateTraceUI([
+            {
+                line: 0,
+                message: `❌ ${error.message}`,
+                time: new Date().toISOString(),
+            },
+        ]);
+
+        const status = document.getElementById("statusText");
+        if (status) {
+            status.textContent = "❌ Executor initialization failed";
+        }
+
+        return null;
+    }
 }
 
 // ====== BUTTON HANDLERS ======
 
+function updateControlsUI() {
+    const prevBtn = document.getElementById('prevBtn');
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const stepBtn = document.getElementById('stepBtn');
+    const runBtn = document.getElementById('runBtn');
+
+    if (!executor) {
+        if (prevBtn) prevBtn.disabled = true;
+        if (playBtn) playBtn.disabled = false;
+        if (playBtn) playBtn.style.display = 'inline-block';
+        if (pauseBtn) pauseBtn.style.display = 'none';
+        return;
+    }
+
+    if (prevBtn) {
+        prevBtn.disabled = executor.history.length <= 1;
+    }
+
+    if (executor.playInterval) {
+        if (playBtn) playBtn.style.display = 'none';
+        if (pauseBtn) pauseBtn.style.display = 'inline-block';
+        if (stepBtn) stepBtn.disabled = true;
+        if (runBtn) runBtn.disabled = true;
+    } else {
+        if (playBtn) playBtn.style.display = 'inline-block';
+        if (pauseBtn) pauseBtn.style.display = 'none';
+        if (stepBtn) stepBtn.disabled = executor.isFinished;
+        if (runBtn) runBtn.disabled = executor.isFinished;
+    }
+}
+
 // Run
 document.getElementById('runBtn').addEventListener('click', () => {
-    if (!executor) initExecutor();
-    executor.runAll();
-    updateConsoleUI(executor.output);
+    if (!executor) {
+        executor = initExecutor();
+    }
+
+    if (!executor) return;
+
+    try {
+        executor.runAll();
+        updateConsoleUI(executor.output);
+        updateVariablesUI(executor.variables);
+    } catch (error) {
+        console.error(error);
+
+        updateConsoleUI([
+            "Execution failed.",
+            error.message,
+        ]);
+
+        updateTraceUI([
+            {
+                line: executor?.currentLine ?? 0,
+                message: `❌ ${error.message}`,
+                time: new Date().toISOString(),
+            },
+        ]);
+    }
 });
 
 // Step
 document.getElementById('stepBtn').addEventListener('click', () => {
-    if (!executor) initExecutor();
-    executor.stepForward();
-    updateConsoleUI(executor.output);
-    updateVariablesUI(executor.variables);
+    if (!executor) {
+        executor = initExecutor();
+    }
+
+    if (!executor) return;
+
+    try {
+        executor.stepForward();
+        updateConsoleUI(executor.output);
+        updateVariablesUI(executor.variables);
+    } catch (error) {
+        console.error(error);
+
+        updateConsoleUI([
+            "Execution failed.",
+            error.message,
+        ]);
+
+        updateTraceUI([
+            {
+                line: executor?.currentLine ?? 0,
+                message: `❌ ${error.message}`,
+                time: new Date().toISOString(),
+            },
+        ]);
+    }
+});
+
+// Prev Step
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (!executor) return;
+    try {
+        executor.stepBackward();
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+// Play
+document.getElementById('playBtn').addEventListener('click', () => {
+    if (!executor) {
+        executor = initExecutor();
+    }
+    if (!executor) return;
+
+    if (executor.playInterval) return;
+
+    executor.playInterval = setInterval(() => {
+        if (executor.isFinished) {
+            clearInterval(executor.playInterval);
+            executor.playInterval = null;
+            updateControlsUI();
+            return;
+        }
+        executor.stepForward();
+        updateConsoleUI(executor.output);
+        updateVariablesUI(executor.variables);
+    }, 1000); // Step every 1000ms
+
+    updateControlsUI();
+});
+
+// Pause
+document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (!executor || !executor.playInterval) return;
+    clearInterval(executor.playInterval);
+    executor.playInterval = null;
+    updateControlsUI();
 });
 
 // Reset
 document.getElementById('resetBtn').addEventListener('click', () => {
-    if (!executor) initExecutor();
-    executor.reset();
-    updateConsoleUI([]);
-    updateVariablesUI({});
+    if (!executor) {
+        executor = initExecutor();
+    }
+
+    if (!executor) return;
+
+    try {
+        executor.reset();
+        updateConsoleUI([]);
+        updateVariablesUI({});
+    } catch (error) {
+        console.error(error);
+
+        updateConsoleUI([
+            "Reset failed.",
+            error.message,
+        ]);
+    }
 });
 
 // ====== DARK MODE TOGGLE ======
@@ -339,6 +627,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ====== INITIAL SETUP ======
+/* global defaultCode, updateLineNumbers */
 document.addEventListener('DOMContentLoaded', () => {
     // Set default code
     const editor = document.getElementById('codeEditor');
@@ -346,7 +635,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLineNumbers();
     
     // Initialize executor
-    initExecutor();
+    executor = initExecutor();
+
+    if (!executor) {
+        return;
+    }
     
     // Show initial state
     updateVariablesUI({});
@@ -354,30 +647,38 @@ document.addEventListener('DOMContentLoaded', () => {
     updateConsoleUI([]);
 });
 
-// ====== UPDATE LINE NUMBERS (from editor.js) ======
-function updateLineNumbers() {
-    const lines = document.getElementById('codeEditor').value.split('\n');
-    const count = lines.length;
-    let html = '';
-    for (let i = 1; i <= count; i++) {
-        html += `<span>${i}</span>`;
-    }
-    document.getElementById('lineNumbers').innerHTML = html;
-}
+// updateLineNumbers() is defined in editor.js, loaded before this file.
 
 // Re-initialize when code changes
 document.getElementById('codeEditor').addEventListener('input', () => {
     if (executor) {
-        executor.reset();
-        initExecutor();
-        updateVariablesUI({});
-        updateTraceUI([]);
-        updateConsoleUI([]);
+        try {
+            executor.reset();
+        } catch (error) {
+            console.error(error);
+
+            updateConsoleUI([
+                "Reset failed.",
+                error.message,
+            ]);
+        }
     }
+
+    executor = initExecutor();
+
+    if (!executor) return;
+
+    updateVariablesUI({});
+    updateTraceUI([]);
+    updateConsoleUI([]);
+
+    updateVariablesUI({});
+    updateTraceUI([]);
+    updateConsoleUI([]);
 });
 
 window.addEventListener("resize", () => {
-  if (typeof updateLineNumbers === 'function') updateLineNumbers();
+  if (typeof window.updateLineNumbers === 'function') window.updateLineNumbers();
 });
 
 /**
@@ -514,7 +815,14 @@ function renderCertificatesDashboard(tracks) {
         // Automatically uses structural records cleanly 
         downloadCertificatePDF("Prasiddhi Mishra", track.topicName, track.completionDate, track.certificateId);
       } else {
-        alert("This roadmap track is not fully completed yet.");
+        downloadBtn.textContent = '⚠ Track not completed';
+        downloadBtn.style.background = '#6b7280';
+        downloadBtn.disabled = true;
+        setTimeout(() => {
+          downloadBtn.textContent = 'Download PDF';
+          downloadBtn.style.background = '#667eea';
+          downloadBtn.disabled = false;
+        }, 3000);
       }
     });
 
@@ -534,6 +842,9 @@ const mockUserCompletedRoadmaps = [
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('certificates-dashboard')) {
     renderCertificatesDashboard(mockUserCompletedRoadmaps);
+  }
+});
+
 // Function to update user interface metrics for Interview Readiness
 function renderReadinessDashboard(data) {
   // Update numbers
@@ -583,3 +894,66 @@ document.addEventListener('DOMContentLoaded', () => {
      renderReadinessDashboard(dummyDataReport);
   }
 });
+
+/**
+ * Saves the current page's bookmark details to browser local storage.
+ * Call this function whenever a user opens/navigates to a learning resource page or visualizer.
+ * @param {string} title - The title of the module or topic
+ * @param {string} category - e.g., 'DSA', 'System Design', 'Interview Prep'
+ * @param {string} relativeUrl - The file path or query string to load upon click
+ */
+function trackUserProgress(title, category, relativeUrl) {
+  const progressMetadata = {
+    title,
+    category,
+    relativeUrl,
+    timestamp: new Date().toLocaleString()
+  };
+  localStorage.setItem('last_visited_learning_page', JSON.stringify(progressMetadata));
+}
+
+/**
+ * Checks local storage for previous progress and loads the resume widget if data exists.
+ */
+function initResumeWidget() {
+  const widget = document.getElementById('resume-learning-widget');
+  const titleElem = document.getElementById('resume-page-title');
+  const categoryElem = document.getElementById('resume-page-category');
+  const timeElem = document.getElementById('resume-page-time');
+  const resumeBtn = document.getElementById('resume-learning-btn');
+
+  if (!widget) return;
+
+  const savedData = localStorage.getItem('last_visited_learning_page');
+
+  if (savedData) {
+    const progress = JSON.parse(savedData);
+
+    // Update UI elements with retrieved metadata
+    titleElem.innerText = progress.title;
+    categoryElem.innerText = progress.category;
+    timeElem.innerText = progress.timestamp;
+
+    // Display widget card reactively
+    widget.style.display = 'block';
+
+    // Hook up click functionality to redirect user
+    resumeBtn.onclick = () => {
+      window.location.href = progress.relativeUrl;
+    };
+  } else {
+    widget.style.display = 'none';
+  }
+}
+
+// Simulated Tracker Event: Let's log a baseline entry if no history exists for demonstration purposes
+document.addEventListener('DOMContentLoaded', () => {
+  // If the user is checking out the dashboard for the first time, mock an active track
+  if (!localStorage.getItem('last_visited_learning_page')) {
+    trackUserProgress("Graph Traversals (BFS & DFS)", "Data Structures & Algorithms", "#graph-visualizer");
+  }
+
+  // Initialize and check layout visibility rules
+  initResumeWidget();
+});
+

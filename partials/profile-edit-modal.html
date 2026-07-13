@@ -1,0 +1,90 @@
+    <!-- Profile Edit Modal -->
+    <div class="modal" id="profileEditModal">
+      <div class="modal-content profile-edit-modal">
+        <div class="modal-header">
+          <h3>Edit Profile</h3>
+          <button type="button"
+            class="modal-close"
+            id="profileModalClose"
+            aria-label="Close edit profile modal"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="profile-edit-form">
+            <div class="name-editor">
+              <label for="profileNameInput">Display Name</label>
+              <input
+                type="text"
+                id="profileNameInput"
+                placeholder="Enter your name"
+                maxlength="20"
+              />
+            </div>
+            <div class="bio-editor" style="margin-top: 1rem;">
+  <label for="profileBioInput">Bio / Tagline</label>
+  <textarea
+    id="profileBioInput"
+    placeholder="Tell others a bit about yourself..."
+    maxlength="120"
+    rows="2"
+    style="width: 100%; resize: vertical; font-family: inherit; padding: 0.6rem; border-radius: 8px; background: var(--dark-surface); border: 1px solid var(--glass-border); color: var(--text-light);"
+  ></textarea>
+</div>
+            <div class="languages-selector" style="margin-top: 1.5rem;">
+              <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Programming Languages Known</h4>
+              <div class="languages-edit-options" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="C++" /> C++
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="Java" /> Java
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="Python" /> Python
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="JavaScript" /> JavaScript
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="Rust" /> Rust
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="TypeScript" /> TypeScript
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="Go" /> Go
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="Kotlin" /> Kotlin
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="Swift" /> Swift
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="C#" /> C#
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="Ruby" /> Ruby
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="PHP" /> PHP
+                </label>
+                <label class="lang-edit-label" style="display: flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--text-light);">
+                  <input type="checkbox" class="lang-edit-checkbox" value="SQL" /> SQL
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="profileModalCancel">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" id="profileModalSave">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </div>
+    </div>

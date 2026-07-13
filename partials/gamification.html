@@ -1,0 +1,55 @@
+    <section id="gamification" class="section gamification-section">
+      <div class="container">
+        <h2 class="section-title">
+          <span class="title-icon">🎮</span>
+          Gamification
+        </h2>
+        <div class="gamification-grid">
+          <div class="xp-card big-box">
+            <h3>Experience Points</h3>
+            <div class="xp-bar-container">
+              <div class="xp-bar" id="xpBar"></div>
+              <span class="xp-text" id="xpText">0 / 1000 XP</span>
+            </div>
+            <div class="level-info">
+              <span
+                class="level-badge"
+                id="levelBadge"
+                onclick="openGameModal()"
+                style="cursor: pointer"
+                title="Click to play DSA games!"
+              >
+                Level 1 - Beginner
+              </span>
+            </div>
+          </div>
+          <div class="badges-showcase big-box">
+            <h3>Badges</h3>
+            <div class="badges-grid" id="badgesGrid">
+            </div>
+          </div>
+
+          <!-- Streak Card -->
+          <div class="streak-card big-box">
+            <div class="streak-card-header">
+              <h3>🔥 Daily Streak</h3>
+              <div class="current-date-display" id="currentDateDisplay">
+                📅 Loading...
+              </div>
+            </div>
+            <div class="streak-display">
+              <div class="streak-number" id="streakNumber">0</div>
+              <div class="streak-label">day streak</div>
+            </div>
+            <div class="streak-week" id="streakWeek"></div>
+            <div class="streak-best">
+              🏅 Best Streak: <span id="bestStreak">0</span> days
+            </div>
+            <div class="challenge-reset">
+              ⏰ Resets in: <span id="resetTimer">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+

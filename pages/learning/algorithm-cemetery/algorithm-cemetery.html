@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="algorithm-cemetery.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="/theme.js"></script>
 </head>
 <body data-page="algorithm-cemetery">
-  <div id="loading-screen">
+  <div id="loading-screen" class="hidden">
     <div class="loader"><div class="infinity-loader">∞</div><h2>Algo Infinity Verse</h2></div>
   </div>
 
@@ -35,7 +36,11 @@
 
   <div id="footer-placeholder"></div>
 
+  <script src="/bootstrap-legacy.js"></script>
+
+
   <script src="/script.js"></script>
+    <script type="module" src="/dist/legacy-bundle.mjs"></script>
 
   <script>
     loadPartial('navbar-placeholder', '/partials/navbar.html');
@@ -45,3 +50,4 @@
   <script src="algorithm-cemetery.js"></script>
 </body>
 </html>
+

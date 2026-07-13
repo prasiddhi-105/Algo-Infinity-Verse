@@ -6,12 +6,13 @@
     <title>Linked List Visualizer | Algo Infinity Verse</title>
     <meta name="description" content="Interactive visualizer for Singly, Doubly, and Circular Linked Lists." />
     
-    <link href="[https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap](https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap)" rel="stylesheet" />
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     
     <!-- External Stylesheets -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="linked-list-visualizer.css" />
+  <script src="/theme.js"></script>
 </head>
 <body class="ll-body">
 
@@ -44,7 +45,7 @@
                 </div>
                 
                 <div class="action-row">
-                    <button class="btn btn-outline w-100" id="btnReset">
+                    <button type="button" class="btn btn-outline w-100" id="btnReset">
                         <i class="fas fa-trash-alt"></i> Clear List
                     </button>
                 </div>
@@ -60,9 +61,9 @@
                     <input type="number" id="insertPos" placeholder="Index (Optional)" min="0" />
                 </div>
                 <div class="action-grid">
-                    <button class="btn btn-primary" id="btnInsertHead">Insert Head</button>
-                    <button class="btn btn-primary" id="btnInsertTail">Insert Tail</button>
-                    <button class="btn btn-secondary w-100" style="grid-column: span 2;" id="btnInsertAt">Insert at Index</button>
+                    <button type="button" class="btn btn-primary" id="btnInsertHead">Insert Head</button>
+                    <button type="button" class="btn btn-primary" id="btnInsertTail">Insert Tail</button>
+                    <button type="button" class="btn btn-secondary w-100" style="grid-column: span 2;" id="btnInsertAt">Insert at Index</button>
                 </div>
             </div>
 
@@ -73,9 +74,9 @@
                     <input type="number" id="deleteVal" placeholder="Node Value or Index" />
                 </div>
                 <div class="action-grid">
-                    <button class="btn btn-danger" id="btnDeleteHead">Del Head</button>
-                    <button class="btn btn-danger" id="btnDeleteTail">Del Tail</button>
-                    <button class="btn btn-outline-danger w-100" style="grid-column: span 2;" id="btnDeleteVal">Delete by Value</button>
+                    <button type="button" class="btn btn-danger" id="btnDeleteHead">Del Head</button>
+                    <button type="button" class="btn btn-danger" id="btnDeleteTail">Del Tail</button>
+                    <button type="button" class="btn btn-outline-danger w-100" style="grid-column: span 2;" id="btnDeleteVal">Delete by Value</button>
                 </div>
             </div>
 
@@ -86,8 +87,8 @@
                     <input type="number" id="searchVal" placeholder="Value to search..." />
                 </div>
                 <div class="action-grid">
-                    <button class="btn btn-accent w-100" id="btnSearch">Search Value</button>
-                    <button class="btn btn-outline w-100" id="btnTraverse">Traverse All</button>
+                    <button type="button" class="btn btn-accent w-100" id="btnSearch">Search Value</button>
+                    <button type="button" class="btn btn-outline w-100" id="btnTraverse">Traverse All</button>
                 </div>
             </div>
             
@@ -146,3 +147,4 @@
     <script src="linked-list-visualizer.js"></script>
 </body>
 </html>
+
